@@ -7721,8 +7721,67 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="2.-Install-Spark-on-docker-in-EC2-Instance">2. Install Spark on docker in EC2 Instance<a class="anchor-link" href="#2.-Install-Spark-on-docker-in-EC2-Instance">¶</a></h1><p>If you have not created an ec2 instance for ee3801 part 2, go to "<a href="https://ee3801.github.io/lab8_9/lab8_9%20batch_data_pipeline.html">lab8_9</a>" to create the instance and install docker before continuing with the instructions below.</p>
-<ol>
+<h1 id="2.-Setup-UAT-Airflow-on-docker-in-AWS-EC2-Instance-(Optional)">2. Setup UAT Airflow on docker in AWS EC2 Instance (Optional)<a class="anchor-link" href="#2.-Setup-UAT-Airflow-on-docker-in-AWS-EC2-Instance-(Optional)">¶</a></h1><h1 id="2.1-Create-EC2-Instance">2.1 Create EC2 Instance<a class="anchor-link" href="#2.1-Create-EC2-Instance">¶</a></h1><ol>
+<li><p>Login to AWS and create an EC2 instance with the configurations below</p>
+<pre><code>Server Name: ee3801part2 
+OS: Ubuntu Server 24.04 
+Architecture: 64-bit 
+instance type: t2.large # 2 vCPU 8 GiB Memory
+Key pair: &lt;previously created&gt;
+Network settings: Allow SSH traffic from Anywhere
+Allow HTTPS
+Allow HTTP
+Configure Storage
+1x30GiB gp3
+</code></pre>
+</li>
+<li><p>Launch Instance</p>
+</li>
+<li><p>Click on the instance and click Connect. Go to SSH client. Copy the Example.</p>
+</li>
+<li><p>Open a terminal and ssh into server.</p>
+</li>
+</ol>
+<h1 id="2.2-Install-docker">2.2 Install docker<a class="anchor-link" href="#2.2-Install-docker">¶</a></h1><ol>
+<li><p>This instructions is according to this website <a href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository">https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository</a>.</p>
+<pre><code># Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+sudo apt-get update
+</code></pre>
+</li>
+<li><p>Install docker</p>
+<p><code>sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></p>
+</li>
+<li><p>To start docker without using root, we need to assign this user to the docker group.</p>
+<pre><code>sudo usermod -aG docker $USER
+</code></pre>
+</li>
+<li><p>Logout, login and try docker command.</p>
+<p><code>docker —version</code></p>
+</li>
+<li><p>You can install Airflow in this docker in EC2 instance with instructions in 1.2 but take note of</p>
+<ul>
+<li>Name the folder as uat_airflow</li>
+</ul>
+</li>
+<li><p>To access the server from browser, you will need to access EC2 &gt; Security Groups &gt; Edit inbound rules &gt; Add rule &gt; Save rules</p>
+<pre><code>Type: Custom TCP
+Port Range: 8080
+Source: Anywhere-IPv4
+</code></pre>
+</li>
+</ol>
+<h1 id="2.3-Install-Spark-on-docker-in-EC2-Instance">2.3 Install Spark on docker in EC2 Instance<a class="anchor-link" href="#2.3-Install-Spark-on-docker-in-EC2-Instance">¶</a></h1><ol>
 <li><p>Launch the ee3801part2 instance</p>
 </li>
 <li><p>Click on the instance and click Connect. Go to SSH client. Copy the Example.</p>
@@ -7810,7 +7869,7 @@ Source: Anywhere-IPv4
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1><p>You have successfully setup spark without cluster and spark with cluster.</p>
 <h1 id="Submissions-by-Wed-9pm-(13-Nov-2024)">Submissions by Wed 9pm (13 Nov 2024)<a class="anchor-link" href="#Submissions-by-Wed-9pm-(13-Nov-2024)">¶</a></h1><p>Submit your ipynb as a pdf. Save your ipynb as a html file, open in browser and print as a pdf. Include in your submission:</p>
-<pre><code>Section 2</code></pre>
+<pre><code>Section 3 Assignment</code></pre>
 </div>
 </div>
 </div>
